@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;700&display=swap" rel="stylesheet" />
+  <title>Frontend Mentor | Interactive rating component</title>
+  <style>
+    :root {
+      --orange: hsl(25, 97%, 53%);
+      --white: hsl(0, 0%, 100%);
+      --grey-500: hsl(217, 12%, 63%);
+      --grey-900: hsl(213, 19%, 18%);
+      --grey-950: hsl(216, 12%, 8%);
+      --card-shadow: 0 24px 48px rgba(0, 0, 0, 0.28);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      min-height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Overpass', sans-serif;
+      background:
+        radial-gradient(circle at top, hsl(213, 19%, 14%) 0%, hsl(216, 12%, 8%) 55%);
+      color: var(--white);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    main {
+      width: 100%;
+      display: grid;
+      place-items: center;
+    }
+
+    .card {
+      width: min(100%, 412px);
+      background: linear-gradient(180deg, hsl(213, 19%, 19%) 0%, hsl(213, 19%, 16%) 100%);
+      border-radius: 30px;
+      box-shadow: var(--card-shadow);
+      padding: 32px;
+    }
+
+    .rating-state,
+    .thank-you-state {
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: hsl(213, 19%, 22%);
+      display: grid;
+      place-items: center;
+      margin-bottom: 32px;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(1.5rem, 2vw, 1.85rem);
+      line-height: 1.2;
+    }
+
+    .description {
+      margin: 0;
+      color: var(--grey-500);
+      font-size: 0.9375rem;
+      line-height: 1.6;
+    }
+
+    .rating-form {
+      margin-top: 24px;
+    }
+
+    .rating-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .rating-btn {
+      width: 52px;
+      height: 52px;
+      border: 0;
+      border-radius: 50%;
+      background: hsl(213, 19%, 22%);
+      color: var(--grey-500);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+
+    .rating-btn:hover,
+    .rating-btn:focus-visible {
+      background: var(--grey-500);
+      color: var(--white);
+      outline: none;
+    }
+
+    .rating-btn:active {
+      transform: scale(0.96);
+    }
+
+    .rating-btn.is-selected {
+      background: var(--orange);
+      color: hsl(216, 12%, 8%);
+    }
+
+    .submit-btn {
+      margin-top: 32px;
+      width: 100%;
+      border: 0;
+      border-radius: 999px;
+      padding: 15px 16px 14px;
+      background: var(--orange);
+      color: hsl(216, 12%, 8%);
+      font: inherit;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
+    }
+
+    .submit-btn:hover,
+    .submit-btn:focus-visible {
+      background: var(--white);
+      color: hsl(216, 12%, 8%);
+      outline: none;
+    }
+
+    .submit-btn:active {
+      transform: scale(0.99);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .thank-you-state {
+      text-align: center;
+      padding: 12px 4px 4px;
+    }
+
+    .thank-you-illustration {
+      width: min(162px, 42vw);
+      height: auto;
+      margin: 4px auto 28px;
+      display: block;
+    }
+
+    .selected-pill {
+      display: inline-block;
+      padding: 8px 16px 7px;
+      border-radius: 999px;
+      background: hsl(213, 19%, 22%);
+      color: var(--orange);
+      font-size: 0.9375rem;
+      line-height: 1.4;
+      margin-bottom: 30px;
+    }
+
+    .thank-you-state h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.5rem, 2vw, 1.85rem);
+      line-height: 1.2;
+    }
+
+    .thank-you-state p {
+      margin: 0;
+      color: var(--grey-500);
+      font-size: 0.9375rem;
+      line-height: 1.6;
+    }
+
+    .attribution {
+      position: fixed;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.6875rem;
+      color: var(--grey-500);
+      text-align: center;
+      white-space: nowrap;
+      padding: 0 12px;
+    }
+
+    .attribution a {
+      color: var(--orange);
+      text-decoration: none;
+    }
+
+    @media (max-width: 420px) {
+      .card {
+        width: min(100%, 327px);
+        padding: 24px;
+        border-radius: 16px;
+      }
+
+      .icon-wrap {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 24px;
+      }
+
+      h1,
+      .thank-you-state h2 {
+        font-size: 1.5rem;
+      }
+
+      .description,
+      .thank-you-state p,
+      .selected-pill {
+        font-size: 0.875rem;
+      }
+
+      .rating-form {
+        margin-top: 20px;
+      }
+
+      .rating-list {
+        gap: 10px;
+      }
+
+      .rating-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 0.875rem;
+      }
+
+      .submit-btn {
+        margin-top: 24px;
+        padding-block: 14px 13px;
+        font-size: 0.875rem;
+        letter-spacing: 0.2em;
+      }
+
+      .thank-you-illustration {
+        width: min(144px, 40vw);
+        margin-bottom: 24px;
+      }
+
+      .selected-pill {
+        padding: 8px 14px 7px;
+        margin-bottom: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="card" aria-labelledby="rating-title">
+      <div class="rating-state" id="rating-state">
+        <div class="icon-wrap" aria-hidden="true">
+          <img src="./images/icon-star.svg" alt="" width="17" height="16" />
+        </div>
+
+        <h1 id="rating-title">How did we do?</h1>
+        <p class="description">
+          Please let us know how we did with your support request. All feedback is appreciated to help us improve our offering!
+        </p>
+
+        <form class="rating-form" id="rating-form">
+          <div class="rating-list" role="group" aria-label="Choose your rating">
+            <button class="rating-btn" type="button" data-rating="1" aria-pressed="false">1</button>
+            <button class="rating-btn" type="button" data-rating="2" aria-pressed="false">2</button>
+            <button class="rating-btn" type="button" data-rating="3" aria-pressed="false">3</button>
+            <button class="rating-btn" type="button" data-rating="4" aria-pressed="false">4</button>
+            <button class="rating-btn" type="button" data-rating="5" aria-pressed="false">5</button>
+          </div>
+
+          <button class="submit-btn" type="submit" id="submit-btn" disabled>Submit</button>
+        </form>
+      </div>
+
+      <div class="thank-you-state hidden" id="thank-you-state" aria-live="polite">
+        <img class="thank-you-illustration" src="./images/illustration-thank-you.svg" alt="Illustration showing a thank you message" />
+        <p class="selected-pill">You selected <span id="selected-rating">0</span> out of 5</p>
+        <h2>Thank you!</h2>
+        <p>
+          We appreciate you taking the time to give a rating. If you ever need more support, don’t hesitate to get in touch!
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank" rel="noreferrer">Frontend Mentor</a>.
+    Coded by <a href="#">Your Name Here</a>.
+  </footer>
+
+  <script>
+    const ratingButtons = document.querySelectorAll('.rating-btn');
+    const submitButton = document.getElementById('submit-btn');
+    const ratingState = document.getElementById('rating-state');
+    const thankYouState = document.getElementById('thank-you-state');
+    const selectedRating = document.getElementById('selected-rating');
+
+    let currentRating = null;
+
+    function setSelectedRating(value) {
+      currentRating = value;
+      selectedRating.textContent = value;
+      submitButton.disabled = false;
+
+      ratingButtons.forEach((button) => {
+        const isActive = button.dataset.rating === String(value);
+        button.classList.toggle('is-selected', isActive);
+        button.setAttribute('aria-pressed', String(isActive));
+      });
+    }
+
+    ratingButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        setSelectedRating(button.dataset.rating);
+      });
+    });
+
+    document.getElementById('rating-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      if (!currentRating) {
+        return;
+      }
+
+      ratingState.classList.add('hidden');
+      thankYouState.classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>
